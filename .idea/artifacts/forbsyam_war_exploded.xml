@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="forbsyam:war exploded">
+    <output-path>$PROJECT_DIR$/target/forbsyam</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="forbsyam" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.2.15" />
+          <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.2.15" />
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.11.2" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/forbsyam/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="forbsyam/web/Web" />
+    </root>
+  </artifact>
+</component>
