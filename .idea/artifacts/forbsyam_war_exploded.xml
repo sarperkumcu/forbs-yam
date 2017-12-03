@@ -9,6 +9,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.2.15" />
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.2.15" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.1" />
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.11.2" />
         </element>
       </element>

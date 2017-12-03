@@ -4,12 +4,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head></h:head>
 <h:form>
     <h:body>
-    <h:inputText value="#{engineController.url}"/>
-        <h:commandButton action="#{engineController.h()}"/>
+        <h:commandLink value="step2" action="index2.xhtml"/><br/><br/>
+        <p:inputText placeholder="URL" value="#{engineController.url}"/>
+        <p:inputText placeholder="Keyword" value="#{engineController.keyword}"/>
+        <p:commandButton value = "Search on Forbs" action="#{engineController.search()}">
+            <p:ajax event="click" update="keyword number"/>
+        </p:commandButton>
+        <br/>
+        <br/>
+        <h:outputText id="keyword" value="#{engineController.keyword}" />
+        <br/>
+        <h:outputText id="number" value="#{engineController.number}"/>
+
     </h:body>
 </h:form>
 </html>

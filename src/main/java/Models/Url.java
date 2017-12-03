@@ -6,7 +6,16 @@ import java.util.Map;
 
 public class Url {
     private String urlAdress;
+    private Integer point;
     public Map keywordNumber = new HashMap();
+
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
+    }
 
     public Map getKeywordNumber() {
         return keywordNumber;
@@ -26,6 +35,10 @@ public class Url {
 
     public Url(String urlAdress){
         this.urlAdress = urlAdress;
+    }
+
+    public void addKeywordToList(String url,Integer number){
+        keywordNumber.put(url,number);
     }
 
 
