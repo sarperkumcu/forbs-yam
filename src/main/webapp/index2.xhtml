@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:form>
+    <h:body>
+        <h:commandLink value="step1" action="index.xhtml"/><br/><br/>
+        <p:inputText placeholder="URLs" value="#{engineController.url}"/>
+        <p:inputText placeholder="Keywords" value="#{engineController.keyword}"/>
+        <p:commandButton value = "Search on Forbs" action="#{engineController.search2()}">
+            <p:ajax event="click" update="keyword number"/>
+        </p:commandButton>
+        <br/>
+        <br/>
+        <h:outputText id="keyword" value="#{engineController.keyword}"/>
+        <br/>
+        <h:outputText id="number" value="#{engineController.number}"/>
+
+    </h:body>
+</h:form>
+</html>
