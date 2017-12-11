@@ -9,18 +9,17 @@
 <h:head></h:head>
 <h:form>
     <h:body>
-        <h:commandLink value="step2" action="index2.xhtml"/><br/><br/>
+        <h:commandLink value="step2" action="index2.xhtml"/><h:commandLink value="step3" action="index3.xhtml"/><br/><br/>
         <p:inputText placeholder="URL" value="#{engineController.url}"/>
         <p:inputText placeholder="Keyword" value="#{engineController.keyword}"/>
-        <p:commandButton value = "Search on Forbs" action="#{engineController.search()}">
-            <p:ajax event="click" update="keyword number"/>
+        <p:commandButton value = "Search on Forbs" action="#{engineController.search()}" oncomplete="" update="keyword number" >
+            <f:ajax render="keyword number"/>
         </p:commandButton>
         <br/>
         <br/>
         <h:outputText id="keyword" value="#{engineController.keyword}" />
         <br/>
-        <h:outputText id="number" value="#{engineController.number}"/>
-
+        <h:outputText id="number" value="#{engineController.number}" />
     </h:body>
 </h:form>
 </html>

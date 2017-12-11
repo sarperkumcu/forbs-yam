@@ -6,14 +6,23 @@ import java.util.Map;
 
 public class Url {
     private String urlAdress;
-    private Integer point;
+    private Double point = 0.0;
     public Map keywordNumber = new HashMap();
+    private ArrayList<Url> subUrls = new ArrayList<Url>();
 
-    public Integer getPoint() {
+    public ArrayList<Url> getSubUrls() { return subUrls; }
+
+    public void setSubUrls(ArrayList<Url> subUrls) { this.subUrls = subUrls; }
+
+    public void addPoint(Double point){
+        this.point += point;
+    }
+
+    public Double getPoint() {
         return point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(Double point) {
         this.point = point;
     }
 
@@ -37,8 +46,8 @@ public class Url {
         this.urlAdress = urlAdress;
     }
 
-    public void addKeywordToList(String url,Integer number){
-        keywordNumber.put(url,number);
+    public void addKeywordToList(String keyword,Integer number){
+        keywordNumber.put(keyword,number);
     }
 
 

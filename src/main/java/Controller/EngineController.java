@@ -2,13 +2,18 @@ package Controller;
 
 import Models.Url;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +25,34 @@ public class EngineController {
     String keyword;
     Integer number;
     List<Url> urlList = new ArrayList<Url>();
+    boolean step1Render = false;
+
+    public boolean isStep1Render() {
+        return step1Render;
+    }
+
+    public void setStep1Render(boolean step1Render) {
+        this.step1Render = step1Render;
+    }
+
+    boolean didUserClickQuery = false;
+
+    public boolean isDidUserClickQuery() {
+        return didUserClickQuery;
+    }
+
+    public void setDidUserClickQuery(boolean didUserClickQuery) {
+        this.didUserClickQuery = didUserClickQuery;
+    }
+
+
+    public List<Url> getUrlList() {
+        return urlList;
+    }
+
+    public void setUrlList(List<Url> urlList) {
+        this.urlList = urlList;
+    }
 
     public Integer getNumber() {
         return number;
@@ -47,7 +80,15 @@ public class EngineController {
 
     public String cleanedHTMLDoc(String url) throws Exception{
 
-        return Jsoup.parse(new Cleaner(Whitelist.basic()).clean(Jsoup.connect(url).timeout(30000).execute().parse()).html()).text().toLowerCase();
+        //try{
+            Document dirtyDoc = Jsoup.connect(url).timeout(30000).execute().parse();
+            return Jsoup.parse(new Cleaner(Whitelist.basic()).clean(Jsoup.parseBodyFragment(dirtyDoc.text())).html()).text().toLowerCase();
+
+
+       /* }catch (Exception ex){
+            System.out.println("An error occured.");
+        }
+            return "";*/
     }
 
     public void addKeywordToMap(Url url, String keyword, Integer number){
@@ -58,30 +99,54 @@ public class EngineController {
         Url url = new Url(this.url);
         System.out.println(keyword);
         number = findNumberOfWord(url.getUrlAdress(),keyword);
-
+        step1Render = true;
     }
 
+    String[] keywordList;
     public void search2() throws Exception{
+        urlList = new ArrayList<Url>();
 
         String[] urlAdressList = url.split(",");
-        String[] keywordList = keyword.split(",");
+        keywordList = keyword.split(",");
         for(String urlAdress : urlAdressList){
             Url url = new Url(urlAdress);
             for(String keyword : keywordList){
-                url.addKeywordToList(url.getUrlAdress(),findNumberOfWord(urlAdress,keyword));
+                url.addKeywordToList(keyword,findNumberOfWord(urlAdress,keyword));
             }
             urlList.add(url);
             System.out.println(url.keywordNumber);
         }
             calculatePoint();
+        didUserClickQuery = true;
+
     }
 
     public void calculatePoint(){
-        for(Url url : urlList){
+        int totalNumberOfWord;
+
+        for(String keyword : keywordList){
+            totalNumberOfWord = 0;
+            for(Url url : urlList){
+                totalNumberOfWord += (Integer)url.keywordNumber.get(keyword);
+            }
+            Double average = (double)(totalNumberOfWord / urlList.size());
+            for(Url url: urlList){
+                if(average.equals(0.0))
+                    url.addPoint(0.0);
+                else
+                    url.addPoint( ((Integer)(url.getKeywordNumber().get(keyword))) / average  );
+            }
+        }
+
+        for(Url url : urlList) {
+            System.out.println( url.getUrlAdress() +" - " + url.getPoint());
+        }
 
         }
 
-    }
+        public void calculatePoint(String urlAdress){
+
+        }
 
     public Integer findNumberOfWord(String url,String keyword) throws Exception{
         String urlContent = cleanedHTMLDoc(url).replaceAll("\\p{P}", " ");
@@ -118,11 +183,89 @@ public class EngineController {
         return number;
 
     }
+
+    public void search3() throws Exception{
+
+       /* urlList = new ArrayList<Url>();
+
+        String[] urlAdressList = url.split(",");
+        keywordList = keyword.split(",");
+        for(String urlAdress : urlAdressList){*/
+           // Url url = new Url(urlAdress);
+            crawl(this.url,this.url);
+            for(String totalLink : totalLinks)
+                links.add(totalLink);
+            for(String link : links){
+                crawl(link,this.url);
+            }
+            links = new ArrayList<String>();
+            for(String totalLink : totalLinks)
+                links.add(totalLink);
+            for(String link : links){
+                crawl(link,this.url);
+            }
+            links = new ArrayList<String>();
+            for(String totalLink : totalLinks)
+                links.add(totalLink);
+        //}
+
+
+    }
+
+
+
+    ArrayList<String> links = new ArrayList<String>();
+    ArrayList<String> totalLinks = new ArrayList<String>();
+
+    boolean firstDepth = true;
+    public void crawl (String url,String website) throws Exception
+    {
+
+       //links = new ArrayList<String>();
+        try
+        {
+            Document htmlDocument = Jsoup.connect(url).timeout(30000).execute().parse();
+            
+            //System.out.println("Received web page at " + url);
+
+            Elements linksOnPage = htmlDocument.select("a[href]");
+            for(Element link : linksOnPage)
+            {
+                if((link.absUrl("href").contains(website) && link.absUrl("href").indexOf(website) == 0) && isValid(link.absUrl("href")) && !totalLinks.contains(link.absUrl("href")) && !link.absUrl("href").contains("#")) {
+                    this.totalLinks.add(link.absUrl("href"));
+
+                }
+            }
+           // System.out.println("Found (" + links.size() + ") links");
+
+
+        }
+        catch(IOException ioe)
+        {
+            // We were not successful in our HTTP request
+           // System.out.println("Error in out HTTP request " + ioe);
+        }
+    }
+
+    public boolean isValid(String url){
+            if(url.toLowerCase().endsWith(".png") || url.toLowerCase().endsWith(".jpg") ||
+                    url.toLowerCase().endsWith(".pdf")|| url.toLowerCase().endsWith(".docx") ||
+                    url.toLowerCase().endsWith(".zip") || url.toLowerCase().endsWith(".xlsx") ||
+                    url.toLowerCase().endsWith(".doc") || url.toLowerCase().endsWith(".rar") ||
+                     url.toLowerCase().endsWith(".gif") || url.toLowerCase().endsWith(".ppt")  ||
+                    url.toLowerCase().endsWith(".pptx") || url.toLowerCase().contains("\\\\") ||
+                    url.toLowerCase().endsWith(".xls")){
+                return false;
+            }
+
+        return true;
+
+    }
+
     @PostConstruct
     public void init(){
         new Locale("tr", "TR");
     }
-
 
 
 
