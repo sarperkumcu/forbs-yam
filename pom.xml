@@ -7,6 +7,39 @@
   <version>1.0-SNAPSHOT</version>
   <name>forbsyam Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.3.2</version>
+      </plugin>
+      <plugin>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.9.59</version>
+      </plugin>
+
+    </plugins>
+
+      <finalName>forbsyam</finalName>
+
+  </build>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,6 +47,14 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.cloud.tools/appengine-maven-plugin -->
+    <dependency>
+      <groupId>com.google.cloud.tools</groupId>
+      <artifactId>appengine-maven-plugin</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-api -->
     <dependency>
@@ -46,7 +87,5 @@
     </dependency>
 
   </dependencies>
-  <build>
-    <finalName>forbsyam</finalName>
-  </build>
+
 </project>

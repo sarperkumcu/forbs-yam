@@ -8,11 +8,18 @@ public class Url {
     private String urlAdress;
     private Double point = 0.0;
     public Map keywordNumber = new HashMap();
+    private Url parentUrl;
     private ArrayList<Url> subUrls = new ArrayList<Url>();
+
+    public Url getParentUrl() { return parentUrl; }
+
+    public void setParentUrl(Url parentUrl) { this.parentUrl = parentUrl;  }
 
     public ArrayList<Url> getSubUrls() { return subUrls; }
 
     public void setSubUrls(ArrayList<Url> subUrls) { this.subUrls = subUrls; }
+
+    public void addSubUrlToList(Url url){ subUrls.add(url);}
 
     public void addPoint(Double point){
         this.point += point;
