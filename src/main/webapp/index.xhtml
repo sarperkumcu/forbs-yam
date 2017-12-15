@@ -9,7 +9,7 @@
 <h:head></h:head>
 <h:form>
     <h:body>
-        <h:commandLink value="step2" action="index2.xhtml"/><h:commandLink value="step3" action="index3.xhtml"/><br/><br/>
+        <h:commandLink value="step2" action="index2.xhtml"/><h:commandLink value="step3" action="index3.xhtml"/><h:commandLink value="step4" action="index4.xhtml"/><br/><br/>
         <p:inputText placeholder="URL" value="#{engineController.url}"/>
         <p:inputText placeholder="Keyword" value="#{engineController.keyword}"/>
         <p:commandButton value = "Search on Forbs" action="#{engineController.search()}" oncomplete="" update="keyword number" >

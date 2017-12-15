@@ -24,24 +24,8 @@ public class EngineController {
     List<Url> urlList = new ArrayList<Url>();
     boolean step1Render = false;
     List<String> synonyms = new ArrayList<String>();
+    String synonymWords = "";
 
-    public boolean isStep1Render() {
-        return step1Render;
-    }
-
-    public void setStep1Render(boolean step1Render) {
-        this.step1Render = step1Render;
-    }
-
-    boolean didUserClickQuery = false;
-
-    public boolean isDidUserClickQuery() {
-        return didUserClickQuery;
-    }
-
-    public void setDidUserClickQuery(boolean didUserClickQuery) {
-        this.didUserClickQuery = didUserClickQuery;
-    }
 
 
     public List<Url> getUrlList() {
@@ -76,6 +60,14 @@ public class EngineController {
         this.url = url.toLowerCase();
     }
 
+    public String getSynonymWords() {
+        return synonymWords;
+    }
+
+    public void setSynonymWords(String synonymWords) {
+        this.synonymWords = synonymWords;
+    }
+
     public String cleanedHTMLDoc(String url) throws Exception {
 
         //try{
@@ -88,9 +80,17 @@ public class EngineController {
         }
             return "";*/
     }
+    public List<String> addToList = new ArrayList<String>();
+    public void addSynonymToKeywordList(String keyword) {
+        if(synonymMap.containsValue(keyword)){
+            addToList.add(synonymMap.get(keyword).toString());
+            synonymWords = synonymWords + "" + keyword + " - " + synonymMap.get(keyword).toString();
+        }
+        else{
+            synonymWords = synonymWords + "" + keyword + " - " + "No synonym word";
+        }
+        synonymWords = synonymWords + "</br>";
 
-    public void addKeywordToMap(Url url, String keyword, Integer number) {
-        url.keywordNumber.put(keyword, number);
     }
 
     public void search() throws Exception {
@@ -101,10 +101,19 @@ public class EngineController {
     }
 
     String[] keywordList;
+    String output = "";
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
 
     public void search2() throws Exception {
         urlList = new ArrayList<Url>();
-
+        output = "";
         String[] urlAdressList = url.split(",");
         keywordList = keyword.split(",");
         for (String urlAdress : urlAdressList) {
@@ -114,26 +123,38 @@ public class EngineController {
             }
             urlList.add(url);
             System.out.println(url.keywordNumber);
+            output = output + "" + url.getUrlAdress() + " - " + url.keywordNumber;
+            output = output + "</br>";
         }
         calculatePoint();
-        didUserClickQuery = true;
 
     }
 
     public void calculatePoint() {
         int totalNumberOfWord;
-
+        int howManyZeros = 0;
+        Double average = 0.0;
         for (String keyword : keywordList) {
+            int urlListSize = urlList.size();
             totalNumberOfWord = 0;
             for (Url url : urlList) {
                 totalNumberOfWord += (Integer) url.keywordNumber.get(keyword);
+                if(((Integer) url.keywordNumber.get(keyword)).equals(0))
+                    urlListSize--;
+
             }
-            Double average = (double) (totalNumberOfWord / urlList.size());
+            if(!(urlListSize == 0))
+                average = (double) (totalNumberOfWord / urlListSize+1);
             for (Url url : urlList) {
                 if (average.equals(0.0))
                     url.addPoint(0.0);
-                else
-                    url.addPoint(((Integer) (url.getKeywordNumber().get(keyword))) / average);
+                else{
+                    if(url.getKeywordNumber().get(keyword).equals(0))
+                         url.addPoint(-1.0);
+                    else
+                        url.addPoint(((Integer) (url.getKeywordNumber().get(keyword))) / average);
+                }
+
             }
         }
 
@@ -199,9 +220,19 @@ public class EngineController {
         return number;
 
     }
+    ArrayList<Url> parentUrlList = new ArrayList<Url>();
+
+    public ArrayList<Url> getParentUrlList() {
+        return parentUrlList;
+    }
+
+    public void setParentUrlList(ArrayList<Url> parentUrlList) {
+        this.parentUrlList = parentUrlList;
+    }
 
     public void search3() throws Exception {
-        ArrayList<Url> parentUrlList = new ArrayList<Url>();
+        output = "";
+        parentUrlList = new ArrayList<Url>();
         urlList = new ArrayList<Url>();
         System.out.println("search 3");
         String[] urlAdressList = url.split(",");
@@ -224,7 +255,8 @@ public class EngineController {
         System.out.println("Size:" + urlTree.size());
         for (List<Url> url : urlTree) {
             for (Url currentURL : url) {
-                System.out.println(currentURL.getUrlAdress() + " -- " + currentURL.getKeywordNumber() /*+ " -- " + currentURL.getPoint()*/ + " -- " + currentURL.getParentUrl().getUrlAdress());
+                output = output + ""   + currentURL.getParentUrl().getUrlAdress() + "--->" + currentURL.getUrlAdress() + " -- " + currentURL.getKeywordNumber();
+                output = output + "</br>";
 
             }
             System.out.println("  -----  --------- ----- --- -- -- -- -");
@@ -290,6 +322,55 @@ public class EngineController {
         return true;
 
     }
+
+    public void search4() throws Exception {
+        parentUrlList = new ArrayList<Url>();
+        output = "";
+        synonymWords = "";
+        urlList = new ArrayList<Url>();
+        System.out.println("search 4");
+        String[] urlAdressList = url.split(",");
+        keywordList = keyword.split(",");
+        for(String keywords : keywordList){
+            addSynonymToKeywordList(keywords);
+        }
+        List<String> listFromArray = Arrays.asList(keywordList);
+        List<String> tempList = new ArrayList<String>(listFromArray);
+        for(String add : addToList)
+            tempList.add(add);
+        String[] tempArray = new String[tempList.size()];
+        keywordList = tempList.toArray(tempArray);
+
+        for (String urlAdress : urlAdressList) {
+            Url url = new Url(urlAdress);
+            for(String keyword : keywordList)
+                url.addKeywordToList(keyword,0);
+            crawl(url, url.getUrlAdress());
+            ArrayList<Url> subUrls = url.getSubUrls();
+            for (Url subUrl : subUrls) {
+                crawl(subUrl, url.getUrlAdress());
+            }
+            parentUrlList.add(url);
+            calculatePointTree(url);
+        }
+
+
+
+        System.out.println("Size:" + urlTree.size());
+        for (List<Url> url : urlTree) {
+            for (Url currentURL : url) {
+                output = output + ""   + currentURL.getParentUrl().getUrlAdress() + "--->" + currentURL.getUrlAdress() + " -- " + currentURL.getKeywordNumber();
+                output = output + "</br>";
+
+            }
+            System.out.println("  -----  --------- ----- --- -- -- -- -");
+        }
+
+        for (Url url : parentUrlList) {
+            System.out.println("PARENT " + url.getUrlAdress() + " : " + url.getPoint());
+        }
+    }
+
 
     @PostConstruct
     public void init() {

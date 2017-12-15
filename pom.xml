@@ -29,6 +29,7 @@
         <version>1.9.59</version>
       </plugin>
 
+
     </plugins>
 
       <finalName>forbsyam</finalName>
@@ -87,13 +88,6 @@
     </dependency>
 
 
-    <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-api -->
-    <dependency>
-      <groupId>com.sun.faces</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>2.2.15</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
     <dependency>
       <groupId>org.apache.tomcat</groupId>
@@ -101,12 +95,7 @@
       <version>8.5.24</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-impl -->
-    <dependency>
-      <groupId>com.sun.faces</groupId>
-      <artifactId>jsf-impl</artifactId>
-      <version>2.2.15</version>
-    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
     <dependency>
@@ -125,57 +114,5 @@
 
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>openshift</id>
-
-      <build>
-        <pluginManagement>
-          <plugins>
-            <!--
-                Git repo is checked out into /var/lib/openshift/52d5741450044610e8000284/app-root/runtime/repo
-                and Maven is started in this directory.
-                Deployable artifacts, mainly ROOT.war, must be copiend into
-                /var/lib/openshift/52d5741450044610e8000284/app-root/runtime/repo/webapps/ROOT.war
-
-                Because wotan-browser is module in subdirectory and I would expect <outputDirectory>../webapps</outputDirectory> value
-                but interestingly it is not true and it must be <outputDirectory>webapps</outputDirectory>
-                -->
-            <plugin>
-              <artifactId>maven-war-plugin</artifactId>
-              <configuration>
-                <outputDirectory>webapps</outputDirectory>
-                <warName>wotan</warName> <!-- http://wotan-anthavio.rhcloud.com/wotan -->
-                <!-- <warName>ROOT</warName> http://wotan-anthavio.rhcloud.com/-->
-              </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-enforcer-plugin</artifactId>
-              <configuration>
-                <skip>true</skip>
-              </configuration>
-            </plugin>
-
-          </plugins>
-        </pluginManagement>
-      </build>
-
-      <repositories>
-        <repository>
-          <id>sonatype-oss-public</id>
-          <url>https://oss.sonatype.org/content/groups/public</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-
-    </profile>
-  </profiles>
 
 </project>

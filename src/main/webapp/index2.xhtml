@@ -9,11 +9,11 @@
 <h:head></h:head>
 <h:form>
     <h:body>
-        <h:commandLink value="step1" action="index.xhtml"/><h:commandLink value="step3" action="index3.xhtml"/><br/><br/>
+        <h:commandLink value="step1" action="index.xhtml"/><h:commandLink value="step3" action="index3.xhtml"/><h:commandLink value="step4" action="index4.xhtml"/><br/><br/>
         <p:inputText placeholder="URLs" value="#{engineController.url}"/>
         <p:inputText placeholder="Keywords" value="#{engineController.keyword}"/>
-        <p:commandButton value = "Search on Forbs" action="#{engineController.search2()}" oncomplete="" update="urldt">
-            <p:ajax render="urldt"/>
+        <p:commandButton value = "Search on Forbs" action="#{engineController.search2()}" oncomplete="" update="urldt output">
+            <p:ajax render="urldt output"/>
         </p:commandButton>
         <br/>
         <br/>
@@ -26,6 +26,8 @@
                 <h:outputText value="#{url.point}" />
             </p:column>
         </p:dataTable>
+        <br/>
+        <h:outputText id="output" value="#{engineController.output}" escape="false" />
     </h:body>
 </h:form>
 </html>
