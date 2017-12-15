@@ -11,10 +11,8 @@
         </webroots>
       </configuration>
     </facet>
-    <facet type="google-app-engine" name="Google App Engine">
-      <configuration>
-        <sdk-home-path>$MAVEN_REPOSITORY$/com/google/appengine/appengine-java-sdk/1.9.59/appengine-java-sdk/appengine-java-sdk-1.9.59</sdk-home-path>
-      </configuration>
+    <facet type="app-engine-standard" name="Google App Engine">
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -28,6 +26,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.4.8.v20171121" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.4.8.v20171121" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud.tools:appengine-maven-plugin:1.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:3.3.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-model:3.3.9" level="project" />
