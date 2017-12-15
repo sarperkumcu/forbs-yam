@@ -7,11 +7,7 @@
 
   <display-name>JavaServerFaces</display-name>
 
-  <!-- Change to "Production" when you are ready to deploy -->
-  <context-param>
-    <param-name>javax.faces.PROJECT_STAGE</param-name>
-    <param-value>Development</param-value>
-  </context-param>
+
 
   <!-- Welcome page -->
   <welcome-file-list>
@@ -27,11 +23,13 @@
 
   <!-- JSF mapping -->
   <servlet>
+    <display-name>forbsyam</display-name>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  <display-name>pazaranaliz-web</display-name>
+
+
 
 
   <!-- Map these files with JSF -->

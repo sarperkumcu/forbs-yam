@@ -55,6 +55,29 @@
       <version>9.4.8.v20171121</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-impl -->
+    <dependency>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-impl</artifactId>
+      <version>2.2.15</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-api -->
+    <dependency>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>2.2.15</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/com.google.cloud.tools/appengine-maven-plugin -->
     <dependency>
@@ -71,6 +94,12 @@
       <version>2.2.15</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>8.5.24</version>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.sun.faces/jsf-impl -->
     <dependency>
